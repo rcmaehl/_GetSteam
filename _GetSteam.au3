@@ -35,29 +35,75 @@ Func _GetSteamPath()
 EndFunc
 
 ; #FUNCTION# ====================================================================================================================
+; Name ..........: _GetSteamGames
+; Description ...: Obtains a list of Steam
+; Syntax ........: _GetSteamGames([$hPath = ""])
+; Parameters ....: $sPath               - [optional] Steam Install Directory. Default will grab from Registry
+; Return values .: Success - Returns an array of Steam Games
+;                  Failure - Returns 0 and sets @error:
+;                  |1 - Steam Install Location Error, sets @extended: (1, Unable to read Registry; 2, Path Invalid)
+; Author ........: rcmaehl (Robert Maehl)
+; Modified ......: 10/18/21
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
+Func _GetSteamGames($hPath = "")
+
+	If $hPath = "" Then
+		Local $aSteamLibraries = _GetSteamLibraries()
+		If @error Then Return SetError(1, @extended, 0)
+	Else
+		Local $aSteamLibraries = _GetSteamLibraries($hPath)
+		If @error Then Return SetError(1, @extended, 0)
+	EndIf
+	Local $aTempArray[0][0]
+	Local $aSteamGames[0][2]
+	For $iLoop1 = 1 To $aSteamLibraries[0] Step 1
+		$aTempArray = _SteamGetGamesFromLibrary($aSteamLibraries[$iLoop1])
+		If $aTempArray[0][0] = 0 Or @error Then ContinueLoop
+		$aTempArray[0][1] = $aTempArray[0][0]
+		Do
+			$iDelete = _ArraySearch($aTempArray, "")
+			If $iDelete = -1 Then
+				;;;
+			Else
+				$aTempArray[0][0] = $aTempArray[0][0] - 1
+			EndIf
+			_ArrayDelete($aTempArray, $iDelete)
+		Until _ArraySearch($aTempArray, "") = -1
+		_ArrayConcatenate($aSteamGames, $aTempArray)
+	Next
+
+	Return $aSteamGames
+
+EndFunc
+
+; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GetSteamLibraries
 ; Description ...: Obtains a list of Steam Libraries
-; Syntax ........: _GetSteamLibraries([$sPath = "None"])
+; Syntax ........: _GetSteamLibraries([$sPath = ""])
 ; Parameters ....: $sPath               - [optional] Steam Install Directory. Default will grab from Registry
 ; Return values .: Success - Returns an array of Steam library locations
 ;                  Failure - Returns 0 and sets @error:
 ;                  |1 - Steam Install Location Error, sets @extended: (1, Unable to read Registry; 2, Path Invalid)
 ;                  |2 - Steam Library File Error, sets @extended: (1, File does not exist; 2, File could not be read)
 ; Author ........: rcmaehl (Robert Maehl)
-; Modified ......: 09/13/21
+; Modified ......: 10/18/21
 ; Remarks .......:
 ; Related .......:
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-Func _GetSteamLibraries($hPath = "None")
+Func _GetSteamLibraries($hPath = "")
 
 	Local $aLibraries[2]
 	Local $hLibraryFile
 
 	$aLibraries[0] = 1
 
-	If $hPath = "None" Then
+	If $hPath = "" Then
 		Local $hSteamDir = _GetSteamPath()
 		If @error Then
 			Return SetError(1,0,0)
