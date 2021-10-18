@@ -73,6 +73,7 @@ Func _GetSteamGames($hPath = "")
 			EndIf
 			_ArrayDelete($aTempArray, $iDelete)
 		Until _ArraySearch($aTempArray, "") = -1
+		ArrayDelete($aTempArray, 0)
 		_ArrayConcatenate($aSteamGames, $aTempArray)
 	Next
 
