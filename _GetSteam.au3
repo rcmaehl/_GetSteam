@@ -256,6 +256,8 @@ Func _GetSteamGamesFromAllLibraries($sPath = "")
 		_ArrayConcatenate($aSteamGames, $aTempArray)
 	Next
 
+	Return $aSteamGames
+
 EndFunc
 
 ; #FUNCTION# ====================================================================================================================
