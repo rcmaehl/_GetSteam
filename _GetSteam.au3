@@ -215,6 +215,48 @@ Func _GetSteamGamesFromLibrary($sLibrary)
 
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GetSteamGamesFromAllLibraries
+; Description ...: Obtains a list of Games from all Steam Libraries
+; Syntax ........: _GetSteamGamesFromAllLibraries([$hPath = ""])
+; Parameters ....: $sPath               - [optional] Steam Install Directory. Default will grab from Registry
+; Return values .: Success - Returns an array of Steam games
+;                  Failure - Returns 0 and sets @error:
+;                  |1 - Steam Library Empty
+; Author ........: rcmaehl (Robert Maehl)
+; Modified ......: 08/08/22
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
+Func _GetSteamGamesFromAllLibraries($sPath = "")
+
+	If $sPath = "" Then
+		Local $aSteamLibraries = _GetSteamLibraries()
+	Else
+		Local $aSteamLibraries = _GetSteamLibraries($sPath)
+	EndIf
+	Local $aTempArray[0][0]
+	Local $aSteamGames[0][2]
+	For $iLoop1 = 1 To $aSteamLibraries[0] Step 1
+		$aTempArray = _SteamGetGamesFromLibrary($aSteamLibraries[$iLoop1])
+		If $aTempArray[0][0] = 0 Then ContinueLoop
+		$aTempArray[0][1] = $aTempArray[0][0]
+		Do
+			$iDelete = _ArraySearch($aTempArray, "")
+			If $iDelete = -1 Then
+				;;;
+			Else
+				$aTempArray[0][0] = $aTempArray[0][0] - 1
+			EndIf
+			_ArrayDelete($aTempArray, $iDelete)
+		Until _ArraySearch($aTempArray, "") = -1
+		_ArrayDelete($aTempArray, 0)
+		_ArrayConcatenate($aSteamGames, $aTempArray)
+	Next
+
+EndFunc
 
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GetSteamGamesDetailsFromLibrary
