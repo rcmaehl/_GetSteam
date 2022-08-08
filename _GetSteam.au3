@@ -155,21 +155,21 @@ Func _GetSteamLibraries($hPath = "")
 EndFunc
 
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: _SteamGetGamesFromLibrary
+; Name ..........: _GetSteamGamesFromLibrary
 ; Description ...: Obtains a list of Games from a specified Steam Library
-; Syntax ........: _SteamGetGamesFromLibrary($sLibrary)
+; Syntax ........: _GetSteamGamesFromLibrary($sLibrary)
 ; Parameters ....: $sLibrary            - Path to a valid Steam Library
 ; Return values .: Success - Returns an array of Steam games
 ;                  Failure - Returns 0 and sets @error:
 ;                  |1 - Steam Library Empty
 ; Author ........: rcmaehl (Robert Maehl)
-; Modified ......: 03/09/19
+; Modified ......: 08/08/22
 ; Remarks .......:
 ; Related .......:
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-Func _SteamGetGamesFromLibrary($sLibrary)
+Func _GetSteamGamesFromLibrary($sLibrary)
 
 	Local $aGames[1][2]
 
@@ -217,23 +217,23 @@ EndFunc
 
 
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: _SteamGetGamesDetailsFromLibrary
+; Name ..........: _GetSteamGamesDetailsFromLibrary
 ; Description ...: Obtains a list of Details from a specified Steam Library
-; Syntax ........: _SteamGetGamesDetailsFromLibrary($sLibrary, $sDetails)
+; Syntax ........: _GetSteamGamesDetailsFromLibrary($sLibrary, $sDetails)
 ; Parameters ....: $sLibrary            - Path to a valid Steam Library
 ;                  $sDetails            - a Opt("GUIDataSeparatorChar") seperated list of details to get
 ; Return values .: Success - Returns an array of Steam game details
 ;                  Failure - Returns 0 and sets @error:
 ;                  |1 - Steam Library Empty
 ; Author ........: rcmaehl (Robert Maehl)
-; Modified ......: 03/09/19
+; Modified ......: 08/08/22
 ; Modified ......:
 ; Remarks .......: Steam manifests do not include the location of the executable
 ; Related .......:
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-Func _SteamGetGamesDetailsFromLibrary($sLibrary, $sDetails)
+Func _GetSteamGamesDetailsFromLibrary($sLibrary, $sDetails)
 
 	Local $aGames[1][2]
 
